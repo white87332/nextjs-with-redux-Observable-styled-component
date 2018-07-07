@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import { of } from 'rxjs';
+import isNode from 'is-node';
 import rootEpic from '../../redux/epics';
 import { fetchTicker } from '../../redux/actions/tick';
 import {
@@ -23,6 +25,7 @@ function mapDispatchToProps(dispatch)
     };
 }
 
+@translate([], { wait: isNode ? false : true })
 class Index extends React.Component
 {
     static propTypes = {
@@ -37,18 +40,18 @@ class Index extends React.Component
         this.state = {};
     }
 
-    componentDidMount()
-    {
-        const { query, fetchTicker } = this.props;
-
-        setInterval(() => {
-            fetchTicker({
-                query: {
-                    limit: query.limit || 10
-                }
-            });
-        }, 5000);
-    }
+    // componentDidMount()
+    // {
+    //     const { query, fetchTicker } = this.props;
+    //
+    //     setInterval(() => {
+    //         fetchTicker({
+    //             query: {
+    //                 limit: query.limit || 10
+    //             }
+    //         });
+    //     }, 5000);
+    // }
 
     static async getInitialProps({ query, store })
     {
@@ -92,6 +95,7 @@ class Index extends React.Component
 
     render()
     {
+        console.log(this.props.t('content.text'));
         return (
             <SCcontainer>
                 {this.renderItems()}
