@@ -3,10 +3,9 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 import { I18nextProvider } from 'react-i18next';
+import stringifyObject from 'stringify-object';
 import isNode from 'is-node';
 import configureStore from '../redux/store';
-
-let i18next = {};
 
 class Wrapper extends App
 {
@@ -27,39 +26,33 @@ class Wrapper extends App
         i18n.languages.forEach((l) => {
             initialI18nStore[l] = i18n.services.resourceStore.data[l];
         });
-
-        i18next = {
-            i18n,
-            initialI18nStore,
-            initialLanguage
-        };
+// console.log(i18n);
 
         return {
-            pageProps
+            pageProps,
+            i18n: stringifyObject(i18n),
+            initialI18nStore,
+            initialLanguage
         };
     }
 
     render()
     {
         const {
-            Component, pageProps, store
+            Component, pageProps, store, i18n, initialI18nStore, initialLanguage
         } = this.props;
 
-        let i18n;
-        if (isNode)
-        {
-            i18n = i18next.i18n;
-        }
-        else
+        if (!isNode)
         {
             i18n = require('../i18n/i18n-client').i18n.default;
         }
-console.log(i18next);
+
+console.log(typeof i18n);
         return (
             <I18nextProvider
                 i18n={i18n}
-                initialI18nStore={i18next.initialI18nStore}
-                initialLanguage={i18next.initialLanguage}
+                initialI18nStore={initialI18nStore}
+                initialLanguage={initialLanguage}
             >
                 <Provider store={store}>
                     <Component {...pageProps} />

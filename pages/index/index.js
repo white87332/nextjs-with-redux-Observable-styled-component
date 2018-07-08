@@ -25,7 +25,7 @@ function mapDispatchToProps(dispatch)
     };
 }
 
-@translate([], { wait: isNode ? false : true })
+// @translate([], { wait: isNode ? false : true })
 class Index extends React.Component
 {
     static propTypes = {
@@ -95,7 +95,7 @@ class Index extends React.Component
 
     render()
     {
-        console.log(this.props.t('content.text'));
+        // console.log(this.props.t('content.text'));
         return (
             <SCcontainer>
                 {this.renderItems()}
