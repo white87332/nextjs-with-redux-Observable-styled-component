@@ -3,12 +3,18 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 import { I18nextProvider } from 'react-i18next';
-import stringifyObject from 'stringify-object';
 import isNode from 'is-node';
 import configureStore from '../redux/store';
 
+let i18nServer;
 class Wrapper extends App
 {
+    constructor(props, context)
+    {
+        super(props, context);
+        this.state = {};
+    }
+
     static async getInitialProps({ Component, ctx })
     {
         let pageProps = {};
@@ -20,17 +26,16 @@ class Wrapper extends App
         const { i18n } = ctx.req;
 
         // i18n
+        i18nServer = i18n;
         let initialI18nStore = {};
         let initialLanguage = i18n.language;
 
         i18n.languages.forEach((l) => {
             initialI18nStore[l] = i18n.services.resourceStore.data[l];
         });
-// console.log(i18n);
 
         return {
             pageProps,
-            i18n: stringifyObject(i18n),
             initialI18nStore,
             initialLanguage
         };
@@ -38,16 +43,12 @@ class Wrapper extends App
 
     render()
     {
-        const {
-            Component, pageProps, store, i18n, initialI18nStore, initialLanguage
+        let {
+            Component, pageProps, store, initialI18nStore, initialLanguage
         } = this.props;
 
-        if (!isNode)
-        {
-            i18n = require('../i18n/i18n-client').i18n.default;
-        }
+        let i18n = isNode ? i18nServer : require('../i18n/i18n-client').i18n.default;
 
-console.log(typeof i18n);
         return (
             <I18nextProvider
                 i18n={i18n}
