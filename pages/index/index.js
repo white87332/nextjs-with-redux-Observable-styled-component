@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import { of } from 'rxjs';
+import isNode from 'is-node';
 import rootEpic from '../../redux/epics';
 import { fetchTicker } from '../../redux/actions/tick';
 import {
@@ -23,6 +25,7 @@ function mapDispatchToProps(dispatch)
     };
 }
 
+@translate([], { wait: isNode ? false : true })
 class Index extends React.Component
 {
     static propTypes = {
@@ -35,6 +38,8 @@ class Index extends React.Component
     {
         super(props, context);
         this.state = {};
+
+        this.langChange = this.langChange.bind(this);
     }
 
     componentDidMount()
@@ -42,6 +47,7 @@ class Index extends React.Component
         const { query, fetchTicker } = this.props;
 
         setInterval(() => {
+            this.langChange();
             fetchTicker({
                 query: {
                     limit: query.limit || 10
