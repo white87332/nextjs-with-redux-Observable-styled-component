@@ -3,10 +3,12 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 import { I18nextProvider } from 'react-i18next';
+import { CookiesProvider } from 'react-cookie';
 import isNode from 'is-node';
 import configureStore from '../redux/store';
 
 let i18nServer;
+let cookies;
 class Wrapper extends App
 {
     constructor(props, context)
@@ -23,7 +25,7 @@ class Wrapper extends App
             pageProps = await Component.getInitialProps(ctx);
         }
 
-        const { i18n } = ctx.req;
+        const { i18n, universalCookies } = ctx.req;
 
         // i18n
         i18nServer = i18n;
@@ -33,6 +35,8 @@ class Wrapper extends App
         i18n.languages.forEach((l) => {
             initialI18nStore[l] = i18n.services.resourceStore.data[l];
         });
+
+        cookies = universalCookies;
 
         return {
             pageProps,
@@ -55,9 +59,12 @@ class Wrapper extends App
                 initialI18nStore={initialI18nStore}
                 initialLanguage={initialLanguage}
             >
-                <Provider store={store}>
-                    <Component {...pageProps} />
-                </Provider>
+                <CookiesProvider cookies={cookies}>
+                    <Provider store={store}>
+                        <Component {...pageProps} />
+                    </Provider>
+                </CookiesProvider>
+
             </I18nextProvider>
         );
     }

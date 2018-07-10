@@ -1,6 +1,7 @@
 const express = require('express');
 const next = require('next');
 const i18nMiddleware = require('i18next-express-middleware');
+const cookiesMiddleware = require('universal-cookie-express');
 const routes = require('./routes');
 const { i18n } = require('./i18n/i18n-server');
 
@@ -14,6 +15,7 @@ app.prepare()
         const server = express();
 
         server.use(i18nMiddleware.handle(i18n));
+        server.use(cookiesMiddleware());
 
         server.use(handler);
 
