@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import { of } from 'rxjs';
+import { toArray } from 'rxjs/operators';
 import isNode from 'is-node';
 import { withCookies, Cookies } from 'react-cookie';
 import rootEpic from '../../redux/epics';
@@ -58,11 +59,11 @@ class Index extends React.Component
     static async getInitialProps({ query, store })
     {
         const resultAction = await rootEpic(
-            of(fetchTicker({ query })),
+            of(fetchTicker({ query }), fetchTicker({ query })),
             store
-        ).toPromise(); // we need to convert Observable to Promise
+        ).pipe(toArray()).toPromise(); // we need to convert Observable to Promise
 
-        store.dispatch(resultAction);
+        resultAction.foreach(store.dispatch);
 
         return { query };
     }
