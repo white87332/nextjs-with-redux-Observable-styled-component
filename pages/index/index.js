@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { of } from 'rxjs';
 import { toArray } from 'rxjs/operators';
 import isNode from 'is-node';
-import { withCookies, Cookies } from 'react-cookie';
+import { withCookies } from 'react-cookie';
 import rootEpic from '../../redux/epics';
 import { fetchTicker } from '../../redux/actions/tick';
 import {
@@ -62,8 +62,10 @@ class Index extends React.Component
             of(fetchTicker({ query }), fetchTicker({ query })),
             store
         ).pipe(toArray()).toPromise(); // we need to convert Observable to Promise
-
-        resultAction.foreach(store.dispatch);
+        
+        resultAction.map((data) => {
+            store.dispatch(data);
+        });
 
         return { query };
     }
