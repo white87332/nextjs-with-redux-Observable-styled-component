@@ -19,24 +19,27 @@ class Wrapper extends App
 
     static async getInitialProps({ Component, ctx })
     {
+        let initialI18nStore;
+        let initialLanguage;
         let pageProps = {};
-        if (Component.getInitialProps)
-        {
+
+        if (Component.getInitialProps) {
             pageProps = await Component.getInitialProps(ctx);
         }
 
-        const { i18n, universalCookies } = ctx.req;
+        if (ctx.req) {
+            const { i18n, universalCookies } = ctx.req;
 
-        // i18n
-        i18nServer = i18n;
-        let initialI18nStore = {};
-        let initialLanguage = i18n.language;
+            i18nServer = i18n;
+            initialI18nStore = {};
+            initialLanguage = i18n.language;
 
-        i18n.languages.forEach((l) => {
-            initialI18nStore[l] = i18n.services.resourceStore.data[l];
-        });
+            i18n.languages.forEach((l) => {
+                initialI18nStore[l] = i18n.services.resourceStore.data[l];
+            });
 
-        cookies = universalCookies;
+            cookies = universalCookies;
+        }
 
         return {
             pageProps,
