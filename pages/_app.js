@@ -23,11 +23,13 @@ class Wrapper extends App
         let initialLanguage;
         let pageProps = {};
 
-        if (Component.getInitialProps) {
+        if (Component.getInitialProps)
+        {
             pageProps = await Component.getInitialProps(ctx);
         }
 
-        if (ctx.req) {
+        if (ctx.req)
+        {
             const { i18n, universalCookies } = ctx.req;
 
             i18nServer = i18n;
