@@ -38,8 +38,6 @@ class Index extends React.Component
     {
         super(props, context);
         this.state = {};
-
-        this.langChange = this.langChange.bind(this);
     }
 
     componentDidMount()
