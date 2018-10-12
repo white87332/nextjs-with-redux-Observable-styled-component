@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { bindActionCreators } from 'redux';
-import { of } from 'rxjs';
-import { toArray } from 'rxjs/operators';
+import { of, interval } from 'rxjs';
+import { toArray, map } from 'rxjs/operators';
 import isNode from 'is-node';
 import { withCookies } from 'react-cookie';
 import rootEpic from '../../redux/epics';
@@ -27,7 +27,7 @@ function mapDispatchToProps(dispatch)
     };
 }
 
-@translate([], { wait: isNode ? false : true })
+@withNamespaces([], { wait: isNode ? false : true })
 @withCookies
 class Index extends React.Component
 {
@@ -47,13 +47,16 @@ class Index extends React.Component
     {
         const { query, fetchTicker } = this.props;
 
-        setInterval(() => {
-            fetchTicker({
-                query: {
-                    limit: query.limit || 10
-                }
-            });
-        }, 5000);
+        let source = interval(5000).pipe(
+            map(() => {
+                return fetchTicker({
+                    query: {
+                        limit: query.limit || 10
+                    }
+                });
+            })
+        );
+        source.subscribe();
     }
 
     static async getInitialProps({ query, store })

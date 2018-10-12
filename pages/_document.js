@@ -17,9 +17,6 @@ export default class WrapperDocument extends Document
         return (
             <html lang="en">
                 <Head>
-                    <title>
-                        nextjs-with-redux-Observable-styled-component
-                    </title>
                     {this.props.styleTags}
                 </Head>
                 <body>

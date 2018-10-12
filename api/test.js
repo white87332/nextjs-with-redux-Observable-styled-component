@@ -1,5 +1,5 @@
-class test {
-
+class test
+{
     constructor()
     {
         this.routes = [
@@ -11,9 +11,8 @@ class test {
 
     init()
     {
-        console.log('test init');
         return Promise.resolve();
-    };
+    }
 
     exec(req, res)
     {
@@ -26,6 +25,6 @@ class test {
             ]
         });
     }
-};
+}
 
 module.exports = test;

@@ -23,6 +23,12 @@ app.prepare()
         server.use(i18nMiddleware.handle(i18n));
         server.use(cookiesMiddleware());
 
+        if (!dev)
+        {
+            server.use(require('compression')());
+            server.use(require('helmet')());
+        }
+
         middlewareApiRoutes(server)
             .then(() => {
                 server.get('*', (req, res) => {
@@ -36,6 +42,7 @@ app.prepare()
                     return apiHandler(req, res);
                 });
             });
+
         server.listen(port, (err) => {
             if (err) throw err;
             console.log(`> Ready on http://localhost:${port}`);
