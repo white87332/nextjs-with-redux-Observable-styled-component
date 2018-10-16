@@ -8,7 +8,7 @@ module.exports = {
             name: 'app',
             script: 'server.js',
             watch: true,
-            ignore_watch: ['/node_moudle'],
+            ignore_watch: ['/node_moudles'],
             env: {
                 NODE_ENV: 'production'
             }
