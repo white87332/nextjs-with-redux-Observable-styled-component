@@ -1,6 +1,12 @@
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
-import { ServerStyleSheet } from 'styled-components';
+import { ServerStyleSheet, createGlobalStyle } from 'styled-components';
+import styledNormalize from 'styled-normalize';
+
+/* eslint no-unused-expressions: ["error", { "allowTaggedTemplates": true }] */
+const GlobalStyle = createGlobalStyle`
+    ${styledNormalize}
+`;
 
 export default class WrapperDocument extends Document
 {
@@ -17,6 +23,7 @@ export default class WrapperDocument extends Document
         return (
             <html lang="en">
                 <Head>
+                    <GlobalStyle />
                     {this.props.styleTags}
                 </Head>
                 <body>

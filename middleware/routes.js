@@ -4,7 +4,6 @@ const path = require('path');
 const folder = path.resolve(__dirname, '../api');
 
 const routeSet = (app) => {
-    console.log('init routes');
     const Apis = [];
     return new Promise((resolve, reject) => {
         fs.readdir(folder, (err, files) => {
