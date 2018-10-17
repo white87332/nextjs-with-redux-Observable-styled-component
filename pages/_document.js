@@ -1,12 +1,6 @@
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
-import { ServerStyleSheet, injectGlobal } from 'styled-components';
-import styledNormalize from 'styled-normalize';
-
-/* eslint no-unused-expressions: ["error", { "allowTaggedTemplates": true }] */
-injectGlobal`
-    ${styledNormalize}
-`;
+import { ServerStyleSheet } from 'styled-components';
 
 export default class WrapperDocument extends Document
 {

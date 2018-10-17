@@ -4,8 +4,15 @@ import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 import { I18nextProvider } from 'react-i18next';
 import { CookiesProvider } from 'react-cookie';
+import { createGlobalStyle } from 'styled-components';
+import styledNormalize from 'styled-normalize';
 import isNode from 'is-node';
 import configureStore from '../redux/store';
+
+/* eslint no-unused-expressions: ["error", { "allowTaggedTemplates": true }] */
+const GlobalStyle = createGlobalStyle`
+    ${styledNormalize}
+`;
 
 let i18nServer;
 let cookies;
@@ -65,6 +72,7 @@ class Wrapper extends App
                 initialLanguage={initialLanguage}
             >
                 <CookiesProvider cookies={cookies}>
+                    <GlobalStyle />
                     <Provider store={store}>
                         <Component {...pageProps} />
                     </Provider>
