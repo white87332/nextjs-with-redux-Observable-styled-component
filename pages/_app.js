@@ -30,11 +30,6 @@ class Wrapper extends App
         let initialLanguage;
         let pageProps = {};
 
-        if (Component.getInitialProps)
-        {
-            pageProps = await Component.getInitialProps(ctx);
-        }
-
         if (ctx.req)
         {
             const { i18n, universalCookies } = ctx.req;
@@ -48,6 +43,11 @@ class Wrapper extends App
             });
 
             cookies = universalCookies;
+
+            if (Component.getInitialProps)
+            {
+                pageProps = await Component.getInitialProps(ctx);
+            }
         }
 
         return {
